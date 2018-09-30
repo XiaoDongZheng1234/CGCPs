@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+use 5.010;	
+system "plink2 --bfile $ARGV[0] --hardy --allow-no-sex --out $ARGV[0] --noweb";	
+system "plink2 --bfile $ARGV[0] --missing --allow-no-sex --out $ARGV[0] --noweb";	
+system "plink2 --bfile $ARGV[0] --assoc --ci 0.95 --allow-no-sex --out $ARGV[0] --noweb";	
+open HWE, "$ARGV[0].hwe";		
+while(<HWE>){
+chmop;
+my $line2=$_;
+my @line2=split /\s+/, $line2;
+	if($line2[3] eq UNAFF){
+	$hwe{$line2[2]}=$line2[$#line2];
+	}
+}
+close HWE;
+open LMISS, "$ARGV[0].lmiss";
+while(<LMISS>){
+chmop;
+my $line3=$_;
+my @line3=split /\s+/, $line3;
+my $callrate=1-$line3[$#line3];
+$lmiss{$line3[2]}=$callrate;
+}
+close LMISS;
+open ASSOC, "$ARGV[0].assoc";
+open OUT, ">$ARGV[0].result.txt";
+while(<ASSOC>){
+chmop;
+my $line1=$_;
+my @line1=split /\s+/, $line1;
+	if($line1=~m%CHR%){
+	push(@line1,"p-hwe","call-rate");
+	say OUT "@line1";
+	next;
+	}else{
+	push(@line1,$hwe{$line1[2]},$lmiss{$line1[2]});
+	say OUT "@line1";
+	}
+}
+close ASSOC;
+#system "rm -f ./*.log";
