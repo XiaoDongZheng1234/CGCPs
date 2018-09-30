@@ -1,0 +1,37 @@
+ Example: #download annotation databases from ANNOVAR or UCSC and save to humandb/ directory
+              annotate_variation.pl -downdb -webfrom annovar refGene humandb/
+              annotate_variation.pl -buildver mm9 -downdb refGene mousedb/
+              annotate_variation.pl -downdb -webfrom annovar esp6500siv2_all humandb/
+        
+              #gene-based annotation of variants in the varlist file (by default --geneanno is ON)
+              annotate_variation.pl -buildver hg19 ex1.avinput humandb/
+          
+              #region-based annotate variants
+              annotate_variation.pl -regionanno -buildver hg19 -dbtype cytoBand ex1.avinput humandb/
+              annotate_variation.pl -regionanno -buildver hg19 -dbtype gff3 -gff3dbfile tfbs.gff3 ex1.avinput humandb/
+          
+              #filter rare or unreported variants (in 1000G/dbSNP) or predicted deleterious variants
+              annotate_variation.pl -filter -dbtype 1000g2015aug_all -maf 0.01 ex1.avinput humandb/
+              annotate_variation.pl -filter -buildver hg19 -dbtype snp138 ex1.avinput humandb/
+              annotate_variation.pl -filter -dbtype dbnsfp30a -otherinfo ex1.avinput humandb/
+Error in argument: please specify only one of --geneanno, -regionanno, --downdb, --filter （一次只能使用一种）
+
+#gene-based annotation
+perl /share/zhengxiaodong/Whome-exome-sequence-analysis/software/annovar/annotate_variation.pl -buildver hg19 test2.txt /share/zhengxiaodong/Whome-exome-sequence-analysis/software/annovar/humandb/ -outfile ./test2.hg19_multianno
+#region-based
+perl /share/zhengxiaodong/Whome-exome-sequence-analysis/software/annovar/annotate_variation.pl -buildver hg19 -regionanno -dbtype cytoBand test2.txt /share/zhengxiaodong/Whome-exome-sequence-analysis/software/annovar/humandb/ -outfile ./test2.hg19_multianno
+
+cat test2.txt
+1       14677   14677   G       A
+1       14907   14907   A       G
+1       14930   14930   A       G
+1       14933   14933   G       A
+
+one time for all annotation
+cd share/zhengxiaodong/Whome-exome-sequence-analysis/software/annovar/humandb/
+perl /share/zhengxiaodong/Whome-exome-sequence-analysis/software/annovar/table_annovar.pl -buildver hg19 -protocol refGene,tfbsConsSites,cytoBand,1000g2015aug_all,esp6500si_all,cosmic70,exac03,avsnp147,clinvar_20150330,ljb_mt,ljb_pp2,avsift -operation g,r,r,f,f,f,f,f,f,f,f,f  test2.txt /share/zhengxiaodong/Whome-exome-sequence-analysis/software/annovar/humandb/ -out ./test2.hg19_multianno -remove -nastring .
+
+201707tanglili
+cd /share/zhengxiaodong/Whome-exome-sequence-analysis/annotate
+
+perl /share/zhengxiaodong/Whome-exome-sequence-analysis/software/annovar/table_annovar.pl -buildver hg19 -protocol refGene,tfbsConsSites,cytoBand,1000g2015aug_all,esp6500si_all,cosmic70,exac03,avsnp147,clinvar_20150330,ljb_mt,ljb_pp2,avsift -operation g,r,r,f,f,f,f,f,f,f,f,f  RGS4-anno.txt /share/zhengxiaodong/Whome-exome-sequence-analysis/software/annovar/humandb/ -out ./RGS4.hg19_multianno -remove -nastring .
