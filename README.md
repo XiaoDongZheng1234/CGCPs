@@ -18,7 +18,7 @@ CGCPs method is a script written in Perl that allows you to identify causual gen
 >> <br> Details of commend on these repository "plink-bed.pl"
 >> <br> After quality control, a batch of SNPs were screened out
 * Annotate
->> Made every SNPs annotate into genes.注释方法及命令需要修改
+>> Made every SNPs annotate into different genes.注释方法及命令需要修改
 * Search CGCPs
 >> This is the core step. 
 >> <br> In the search process, all the genotype combination patterns would be searched in each
