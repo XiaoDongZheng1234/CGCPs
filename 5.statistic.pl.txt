@@ -1,0 +1,93 @@
+#!/usr/bin/perl
+use 5.010;
+#perl statistic.pl.txt statistic_test.txt G > statistic_final_report.txt
+
+open IN, "$ARGV[0]" or die "cannot open report file";
+%hash;
+while(<IN>){
+chomp;
+my @line=split/\s+/;
+	if($ARGV[1]=~/^l$/i or $ARGV[1] =~/^loci$/i){
+	$num=7;
+	}elsif($ARGV[1]=~/^g$/i or $ARGV[1] =~/^gene$/i){
+	$num=11;
+	}else{
+	die  "haven't define statistic";
+	}
+$hash{$line[$num]}="1";
+my $multi=($#line-21)/6;
+my @snp=($line[13],$line[14],$line[15]);
+my @samplecase=undef;
+my @samplecontrol=undef;
+	for my $tt(0..$multi){
+	my $casett=18+6*$tt;
+	my $controltt=20+6*$tt;
+	my @casett=split/:/,$line[$casett];
+	my @controltt=split/:/,$line[$controltt];
+	push (@samplecase,@casett);
+	push (@samplecontrol,@controltt);
+	}
+my $hashsnp="$line[$num]_snp";
+my $hashcase="$line[$num]_case";
+my $hashcontrol="$line[$num]_control";
+push (@$hashsnp,@snp);
+push (@$hashcase,@samplecase);
+push (@$hashcontrol,@samplecontrol);
+}
+close IN;
+
+foreach my $key (sort keys %hash){
+chomp;
+my $snp="$key"."_snp";
+my $control="$key"."_control";
+my $case="$key"."_case";
+my %snp;
+my %case;
+my %control;
+my $snp_all;
+my $case_all;
+my $control_all;
+
+	for(@$snp){
+	chomp;
+	$snp{$_}="1";
+	}
+my $snp_length=keys %snp;
+	for(@$case){
+	chomp;
+	$case{$_}="1";
+	}
+delete $case{""};
+my $case_length=keys %case;
+	for(@$control){
+	chomp;
+	$control{$_}="1";
+	}
+delete $control{undef};
+delete $control{""};
+my $control_length=keys %control;
+	for my $snptest(sort keys %snp){
+	chomp;
+	$snp_all.="$snptest:";
+	}
+	for my $casetest(sort keys %case){
+	chomp;
+	$case_all.="$casetest:";
+	}
+	for my $controltest(sort keys %control){
+	chomp;
+	$control_all.="$controltest:";
+	}
+say "$key\t$snp_all\t$snp_length\t$case_all\t$case_length\t$control_all\t$control_length";
+}
+
+
+
+
+
+
+
+
+
+
+
