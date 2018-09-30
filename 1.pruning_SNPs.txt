@@ -1,0 +1,2 @@
+#useage: plink2 --bfile_pruning_test_SNPs --allow-no-sex --indep-pairwise 100 25 0.2 --out asian_loci --noweb
+#pruning_SNPs, plink ped map file profix name; 100, window size 100 SNPs; 25, step, shift the window 25 SNPs forward and repeat the procedure; 0.2, R^2 threshold, remove one of pair of SNPs if the LD is greater than 0.2;
