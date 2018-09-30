@@ -1,0 +1,195 @@
+#!/usr/bin/perl
+use strict;
+use 5.010;
+#use warnings;
+#useage: nohup perl CGCPs.pl.txt test	0.0047 10 3 > test_myfile.txt &
+#CGCPs,plink ped map hwe file profix name; 0.0047 prevalence rate; 10, cutoff depth; 3, number of selected snps for combination analysis; $low_boundary=0.01*$prevalence; $up_boundary=$prevalence;
+
+my $nowtime=localtime;
+say "$nowtime";
+#读取数据
+#读取snp信息
+open IA, "$ARGV[0].map";
+my %hash;
+my @snp = ();
+my @sample=();
+while(<IA>){
+chomp;
+my $line1=$_;
+my @line1=split/\s+/,$line1;
+push (@snp,$line1[1]);
+}
+my @snpnum=(0..$#snp);
+my %phenotype;
+my %genotype;
+close IA;
+
+#读取基因型数据，并建立hash
+open IB, "$ARGV[0].ped";
+while(<IB>){
+chomp;
+my $line2=$_;
+my @line2=split/\s+/,$line2;
+push (@sample,$line2[0]);
+$phenotype{$line2[0]}="$line2[5]";
+	foreach(@snpnum){
+	my $num=$_;
+	my $aa=6+$num*2;
+	my $bb=7+$num*2;
+	$genotype{$line2[0].$snp[$_]}="$line2[$aa]$line2[$bb]";
+	}
+}
+close IB;
+
+#读取hwe文件，获取各位点基因型人群中的频率信息；
+open IO, "$ARGV[0].hwe";
+my %freqcase;
+my %freqcontrol;
+while(<IO>){
+chomp;
+my $line=$_;
+my @line=split/\s+/,$line;
+	if($line[3] =~/^AFF/){
+	my @numaff=split/\//,$line[6];
+	my $numaff=$numaff[0]+$numaff[1]+$numaff[2];
+		if($numaff > 0){
+		$freqcase{$line[2].$line[4].$line[4]}=$numaff[0]/$numaff;
+		$freqcase{$line[2].$line[4].$line[5]}=$numaff[1]/$numaff;
+		$freqcase{$line[2].$line[5].$line[5]}=$numaff[2]/$numaff;
+		}
+	}elsif($line[3] =~/UNAFF/){
+	my @numunaff=split/\//,$line[6];
+	my $numunaff=$numunaff[0]+$numunaff[1]+$numunaff[2];
+		if($numunaff > 0){
+		$freqcontrol{$line[2].$line[4].$line[4]}=$numunaff[0]/$numunaff;
+		$freqcontrol{$line[2].$line[4].$line[5]}=$numunaff[1]/$numunaff;
+		$freqcontrol{$line[2].$line[5].$line[5]}=$numunaff[2]/$numunaff;
+		}
+	}else{
+	next;
+	}
+}
+
+
+
+#定义患病率P;系数lamda,以及挑选几个snp的组合;
+my $prevalence=$ARGV[1];
+my $low_boundary=0.01*$prevalence;
+my $up_boundary=$prevalence;
+my $lamda=(1-$prevalence)/$prevalence;
+my $deep=$ARGV[2];
+my $size=$ARGV[3];
+
+###########主程序################
+foreach(@snpnum){
+&check($_,$size);
+}
+
+###########子程序################
+sub check{
+my $value = shift;
+my $max = (split (/\t/,$value))[-1];
+my $size = shift;
+my @tmpList;
+        foreach(@snpnum){
+                if($max < $_){#组合数需要控制后面添加的元素
+                        push(@tmpList,$_);
+                }
+	
+        }
+
+        foreach(@tmpList){
+        my $tmpValue = "$value"."\t$_";
+	my @tmpValue = split /\t/,$tmpValue;
+
+###########################          
+                if($#tmpValue + 1 == $size){
+		my @snplistnum=@tmpValue;
+		my $snpselect;
+		my %haplotype;
+		my %haplotypenum;
+		my %haplotypenumc;
+		my %haplotypesam;
+		my %haplotypesamc;
+			foreach(@snplistnum){
+			$snpselect.="$snp[$_]\t";
+			}
+
+#构建case的haplotype；
+			foreach my $samplecase(@sample){
+				if ($phenotype{$samplecase} eq 2){
+				my $genotypecase=undef;
+					foreach(@snplistnum){
+					$genotypecase.=$genotype{$samplecase.$snp[$_]};
+					}
+					if($genotypecase !~0){
+					$haplotype{$genotypecase}="1";
+					$haplotypenum{$genotypecase}+=1;
+					$haplotypesam{$genotypecase}.="$samplecase".":";########################
+					}
+				}
+			}
+
+#构建control中含有的haplotype；
+			foreach my $samplecontrol(@sample){
+				if ($phenotype{$samplecontrol} eq 1){
+				my $genotypecontrol=undef;
+					foreach(@snplistnum){
+					$genotypecontrol.=$genotype{$samplecontrol.$snp[$_]};
+					}
+					if($genotypecontrol !~0){
+					$haplotypenumc{$genotypecontrol}+=1;
+					$haplotypesamc{$genotypecontrol}.="$samplecontrol".":";######################
+					}	
+				}
+			}
+
+#去除control中含有的haplotype，出现次数大于1次；
+			foreach my $key(sort keys %haplotype){
+				if($haplotypenumc{$key}>1){
+				delete $haplotype{$key};
+				}
+			}
+
+#检验haplotype频率，是否位于0.01P和0.2P之间；
+		my @snpselect=split/\t/,$snpselect;
+		my %hap=();
+			foreach my $hap (sort keys %haplotype){
+			my @hap=split//,$hap;
+			my $hapfrq=1;
+				foreach my $nn(0..$#snpselect){
+				my $aa=2*$nn;
+				my $bb=2*$nn+1;
+				my $hapfrqadd=($freqcase{$snpselect[$nn].$hap[$aa].$hap[$bb]}+$freqcontrol{$snpselect[$nn].$hap[$aa].$hap[$bb]}*$lamda)/(1+$lamda);
+				$hapfrq*=$hapfrqadd;
+				}
+			$hap{$hap}=$hapfrq;
+				unless($hapfrq>$low_boundary and $hapfrq<$up_boundary){
+				delete $haplotype{$hap};
+				}
+				if($haplotypenum{$hap} < $deep){
+				delete $haplotype{$hap};
+				}
+			}
+
+#检验是否有结果，并输出snplist和haplotype；
+		my @haplotype =	keys %haplotype;	
+			if(%haplotype){ 
+			print "\n$snpselect\t";
+				foreach(@haplotype){
+					if(exists $haplotypenumc{$_}){
+					print "$_\t$haplotypenum{$_}\t$haplotypesam{$_}\t$haplotypenumc{$_}\t$haplotypesamc{$_}\t$hap{$_}\t";##################
+					}else{
+					print "$_\t$haplotypenum{$_}\t$haplotypesam{$_}\t0\tundef\t$hap{$_}\t";###################
+					}	
+				}
+			}
+                next;
+                }
+###########################
+
+        &check($tmpValue,$size);
+        }
+}
+my $outtime=localtime;
+say "$outtime";
