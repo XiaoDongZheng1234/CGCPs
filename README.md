@@ -9,7 +9,7 @@ These instructions will get you a copy of the project up and running on your loc
 <br> In order to facilitate the operation and reduce the amount of computation, before started CGCP，you can select loci that you intrested in. 
 >> Prepared genotype/sequencing data to plain text PLINK format(.ped/.map/.hwe). Test files are showed in "Test documents" folder named "select-interested-loci(.ped/.map/.hwe)".
 * **Running CGCP**
-<br> The ruuning command and its usage warinings are as follow. You can also read the detail in this repository ("CGCP.pl.txt"). After running CGCP with the test file, the generated file is named "CGCP-test.txt".
+<br> The ruuning command and its usage warinings are as follow. You can also read the detail in this repository ("CGCP.pl.txt"). After running CGCP with the test file, the generated file is named "CGCP-test.txt".Test documents were performed by Perl 5.01.
 ```perl
 #!/usr/bin/perl
 use strict;
@@ -205,20 +205,9 @@ my @tmpList;
 my $outtime=localtime;
 say "$outtime";//perl
 ```
-* Annotate
->> Made every SNPs annotate into different genes.注释方法及命令需要修改
-* Search CGCPs
->> This is the core step. 
->> <br> In the search process, all the genotype combination patterns would be searched in each
->> <br> individual among the cases and controls. Only candidate CGCPs were picked up, while the
->> <br> others, if they occurred over once in the controls, would be eliminated from the process.
->> <br> Details of commend on these repository "CGCPs.pl.txt"
-* Merging the data of CGCPs 
->> Patients who had same CGCPs will be merged and statisticed.
->> <br> Details of commend on these repository "statistic.pl.txt"
+* **Variants annotation and enrichment for the genotype combinations**
+>> Merged these genotype combinations selected by CGCP into gene or loci combinations if it has the same gene symbol and physical location.
 
-## Runing test
-Ruuning test need to follow above steps. Test documents were performed by Perl 5.01 and PLINK 1.07 and we upload all files on these repository
 
 ## Download/Installation
 * Perl, a family of two high-level, general-purpose, interpreted, dynamic programming languages. Need to install above version 5.01.
@@ -226,8 +215,6 @@ Ruuning test need to follow above steps. Test documents were performed by Perl 5
 * <br> PLINK, an open-source C/C++ WGAS tool set. You need to install above 1.07.
 <br> Copyright (C) 2006 Shaun Purcell, GNU General Public License, v2  http://pngu.mgh.harvard.edu/purcell/plink/ 
 
-## Notice
-根据不同的数据类型，注释文件有所不同
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details
