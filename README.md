@@ -1,23 +1,15 @@
 # CGCP-Perl
-“Causual genotype combination patterns (CGCPs)” method is an exhaustive process developed by ourselves with a script written in Perl language that allows you to identify causual genotype combination patterns in complicated disease.
-Two core algorithm are executed by CGCP. One is that CGCP program can screen the variants combinations existed only in patients while not in control. Another is that after eliminating the patterns existing in the control cohort, the remaining patterns would be examined by frequency according to the prevalence rate as a boundary condition to limit the scale of calculation. Combined with the prevalence of a particular complex disease, CGCP can be used to simulate the frequency of genotypes in the population by magnificating times for controls from experiment. The sum of frequency of disease-specific genotype combination in the simulated population that clearly do not meet the prevalence of disease are removed by CGCP. Once the procedure of CGCP is complete, specific genotype combinations are selected.
+“Causual genotype combination patterns (CGCPs)” method is an exhaustive process developed by ourselves with a script written in Perl language that allows you to identify causual genotype combination patterns in complicated disease.<br>Two core algorithm are executed by CGCP. One is that CGCP program can screen the variants combinations existed only in patients while not in control. Another is that after eliminating the patterns existing in the control cohort, the remaining patterns would be examined by frequency according to the prevalence rate as a boundary condition to limit the scale of calculation. Combined with the prevalence of a particular complex disease, CGCP can be used to simulate the frequency of genotypes in the population by magnificating times for controls from experiment. The sum of frequency of disease-specific genotype combination in the simulated population that clearly do not meet the prevalence of disease are removed by CGCP.
+<br>Once the procedure of CGCP is complete, specific genotype combinations are selected.
 
 ## How it works
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
 ### CGCPs steps
+* Data preperation
 <br> In order to facilitate the operation and reduce the amount of computation, before started CGCP，you can select loci that you intrested in. 
-* Preperation of raw data of genome
->> PLINK Binary files (BED/BIM/FAM) from genome sequencing raw data
-* Extract SNPs (single nucleotide polymorphisms) in genome regions of interest
->> Executed by PLINK 
-* Select independent SNPs
->> Considering Linkage disequilibrium, pruning redundancy SNPs to select independent SNPs is necessary, executed by PLINK
->> <br> Details of commend on these repository "pruning_SNPs" 
-* Association study
->> Using Perl language to excute command of PLINK-association
->> <br> Details of commend on these repository "plink-bed.pl"
->> <br> After quality control, a batch of SNPs were screened out
+>> Prepared genotype/sequencing data to binary test PLINK format(.bed/.bim/.fam)
+
 * Annotate
 >> Made every SNPs annotate into different genes.注释方法及命令需要修改
 * Search CGCPs
