@@ -6,7 +6,7 @@
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
 ### CGCPs steps
-* Data preperation
+* **Data preperation**
 <br> In order to facilitate the operation and reduce the amount of computation, before started CGCP，you can select loci that you intrested in. 
 >> Prepared genotype/sequencing data to plain text PLINK format(.ped/.map/.hwe)
 
