@@ -7,7 +7,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### CGCPs steps
 * **Data preperation**
 <br> In order to facilitate the operation and reduce the amount of computation, before started CGCP，you can select loci that you intrested in. 
->> Prepared genotype/sequencing data to plain text PLINK format(.ped/.map/.hwe). Test files are showed in "Test document" folder named "select-interested-loci(.ped/.map/.hwe)".
+>> Prepared genotype/sequencing data to plain text PLINK format(.ped/.map/.hwe). Test files are showed in "Test documents" folder named "select-interested-loci(.ped/.map/.hwe)".
 
 * Annotate
 >> Made every SNPs annotate into different genes.注释方法及命令需要修改
