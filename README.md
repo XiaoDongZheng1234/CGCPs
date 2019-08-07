@@ -1,7 +1,10 @@
 # CGCP-Perl
 “Causual genotype combination patterns (CGCPs)” method is an exhaustive process developed by ourselves with a script written in Perl language that allows you to identify causual genotype combination patterns in complicated disease.
 Two core algorithm are executed by CGCP. One is that CGCP program can screen the variants combinations existed only in patients while not in control. Another is that after eliminating the patterns existing in the control cohort, the remaining patterns would be examined by frequency according to the prevalence rate as a boundary condition to limit the scale of calculation. Combined with the prevalence of a particular complex disease, CGCP can be used to simulate the frequency of genotypes in the population by magnificating times for controls from experiment. The sum of frequency of disease-specific genotype combination in the simulated population that clearly do not meet the prevalence of disease are removed by CGCP. Once the procedure of CGCP is complete, specific genotype combinations are selected.
+
 ## How it works
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+
 ### CGCPs steps
 <br> In order to facilitate the operation and reduce the amount of computation, before started CGCP，you can select loci that you intrested in. 
 * Preperation of raw data of genome
