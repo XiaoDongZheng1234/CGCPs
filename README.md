@@ -208,6 +208,9 @@ say "$outtime";//perl
 * **Variants annotation and enrichment for the genotype combinations**
 >> Merged these genotype combinations selected by CGCP into gene or loci combinations if it has the same gene symbol and physical location.
 
+## Notice
+程序算完以后补充以下信息：我们用了多大的数据量，耗时多少。我们电脑的内存性能是什么样的。
+
 
 ## Download/Installation
 * Perl, a family of two high-level, general-purpose, interpreted, dynamic programming languages. Need to install above version 5.01.
