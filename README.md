@@ -93,12 +93,12 @@ my $lamda=(1-$prevalence)/$prevalence;
 my $deep=$ARGV[2];
 my $size=$ARGV[3];
 
-###########Master Program################
+
 foreach(@snpnum){
 &check($_,$size);
 }
 
-###########Subprogram################
+
 sub check{
 my $value = shift;
 my $max = (split (/\t/,$value))[-1];
@@ -138,7 +138,7 @@ my @tmpList;
 					if($genotypecase !~0){
 					$haplotype{$genotypecase}="1";
 					$haplotypenum{$genotypecase}+=1;
-					$haplotypesam{$genotypecase}.="$samplecase".":";########################
+					$haplotypesam{$genotypecase}.="$samplecase".":";
 					}
 				}
 			}
@@ -152,7 +152,7 @@ my @tmpList;
 					}
 					if($genotypecontrol !~0){
 					$haplotypenumc{$genotypecontrol}+=1;
-					$haplotypesamc{$genotypecontrol}.="$samplecontrol".":";######################
+					$haplotypesamc{$genotypecontrol}.="$samplecontrol".":";
 					}	
 				}
 			}
@@ -189,9 +189,9 @@ my @tmpList;
 			print "\n$snpselect\t";
 				foreach(@haplotype){
 					if(exists $haplotypenumc{$_}){
-					print "$_\t$haplotypenum{$_}\t$haplotypesam{$_}\t$haplotypenumc{$_}\t$haplotypesamc{$_}\t$hap{$_}\t";##################
+					print "$_\t$haplotypenum{$_}\t$haplotypesam{$_}\t$haplotypenumc{$_}\t$haplotypesamc{$_}\t$hap{$_}\t";
 					}else{
-					print "$_\t$haplotypenum{$_}\t$haplotypesam{$_}\t0\tundef\t$hap{$_}\t";###################
+					print "$_\t$haplotypenum{$_}\t$haplotypesam{$_}\t0\tundef\t$hap{$_}\t";
 					}	
 				}
 			}
