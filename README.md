@@ -105,7 +105,7 @@ my $max = (split (/\t/,$value))[-1];
 my $size = shift;
 my @tmpList;
         foreach(@snpnum){
-                if($max < $_){#组合数需要控制后面添加的元素
+                if($max < $_){
                         push(@tmpList,$_);
                 }
 	
@@ -115,7 +115,7 @@ my @tmpList;
         my $tmpValue = "$value"."\t$_";
 	my @tmpValue = split /\t/,$tmpValue;
 
-###########################          
+        
                 if($#tmpValue + 1 == $size){
 		my @snplistnum=@tmpValue;
 		my $snpselect;
@@ -197,7 +197,7 @@ my @tmpList;
 			}
                 next;
                 }
-###########################
+
 
         &check($tmpValue,$size);
         }
@@ -212,8 +212,6 @@ say "$outtime";//perl
 ## Download/Installation
 * Perl, a family of two high-level, general-purpose, interpreted, dynamic programming languages. Need to install above version 5.01.
 <br> Copyright (C) 1989 Free Software Foundation, Inc. 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-* <br> PLINK, an open-source C/C++ WGAS tool set. You need to install above 1.07.
-<br> Copyright (C) 2006 Shaun Purcell, GNU General Public License, v2  http://pngu.mgh.harvard.edu/purcell/plink/ 
 
 
 ## License
