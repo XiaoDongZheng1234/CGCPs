@@ -9,7 +9,7 @@ These instructions will get you a copy of the project up and running on your loc
 <br> In order to facilitate the operation and reduce the amount of computation, before started CGCP，you can select loci that you intrested in. 
 >> Prepared genotype/sequencing data to plain text PLINK format(.ped/.map/.hwe). Test files are showed in "Test documents" folder named "select-interested-loci(.ped/.map/.hwe)".
 * **Running CGCP**
-<br>CGCP的运行命令as follow，you can also read it at 哪个文件夹。利用测试文件运行CGCP后，生成的文件命名为"XXXXX".
+<br> The ruuning command and its usage warinings are as follow. You can also read the detail in this repository ("CGCP.pl.txt"). After running CGCP with the test file, the generated file is named "CGCP-test.txt".
 ```perl
 #!/usr/bin/perl
 use strict;
