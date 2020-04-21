@@ -1,0 +1,102 @@
+#python completely_random.py.txt 100 20 # 100 times permutation, 20pair data
+import sys
+import scipy.stats as st
+import numpy as np
+import random
+str1=int(sys.argv[1])
+str2=int(sys.argv[2])
+for iii in range (0,str1):
+ pall=[]
+ xbarall=[]
+ xmall=[]
+ palls=[]
+ xbaralls=[]
+ xmalls=[]
+ result=[]
+ for ii in range (0,str2):
+  four = []
+  five = []
+  six = []
+  p=0
+  p4 = p5 = p6 = 1
+  for num in range(1,5):
+   f=random.random()
+   p4=p4*f
+   four.append (f)
+  for num in range(1,6):
+   f=random.random()
+   p5=p5*f
+   five.append (f)
+  for num in range(1,7):
+   f=random.random()
+   p6=p6*f
+   six.append (f)
+  p=p4+p5+p6
+  pall.append(p)
+  palls.append(str(p))
+
+  combine = []
+  total=xbar=xm=0
+  for i in range(0,4):
+   for j in range(0,4):
+    for k in range(0,4):
+     if ((i!=j)and(i<j)and(j!=k)and(j<k)and(k!=i)):
+      fc=four[i]*four[j]*four[k]
+      combine.append (fc)
+      total+=1
+  for i in range(0,5):
+   for j in range(0,5):
+    for k in range(0,5):
+     if ((i!=j)and(i<j)and(j!=k)and(j<k)and(k!=i)):
+      fc=five[i]*five[j]*five[k]
+      combine.append (fc)
+      total+=1
+  for i in range(0,6):
+   for j in range(0,6):
+    for k in range(0,6):
+     if ((i!=j)and(i<j)and(j!=k)and(j<k)and(k!=i)):
+      fc=six[i]*six[j]*six[k]
+      combine.append (fc)
+      total+=1
+  xbar=np.mean(combine)
+  xm=np.median(combine)
+  xbarall.append(xbar)
+  xmall.append(xm)
+  xbaralls.append(str(xbar))
+  xmalls.append(str(xm))
+
+ slope, intercept, r_value, p_value, slope_std_error = st.linregress(xbarall, pall)
+ result.append(str(slope))
+ result.append(str(intercept))
+ result.append(str(r_value**2))
+ result.append(str(slope_std_error))
+ result.append(str(p_value))
+
+ slope, intercept, r_value, p_value, slope_std_error = st.linregress(xmall, pall)
+ result.append(str(slope))
+ result.append(str(intercept))
+ result.append(str(r_value**2))
+ result.append(str(slope_std_error))
+ result.append(str(p_value))
+ a = ','
+ resultlist=a.join(result)
+ resultn=resultlist + "\n"
+ file = open("./completely_random/result.txt", "a")
+ file.write(resultn)
+ file.close()
+
+ if ((iii==0) or (iii==9) or (iii==99)):
+  f = open("./completely_random/{0}.txt".format(iii), "w") 
+  aa = ','
+  xbaralllist=aa.join(xbaralls)
+  xbaralln=xbaralllist + "\n"
+  xmalllist=aa.join(xmalls)
+  xmalln=xmalllist + "\n"
+  palllist=aa.join(palls)
+  palln=palllist + "\n"
+  f.write(str(xbaralln))
+  f.write(str(xmalln))
+  f.write(str(palln))
+  f.close()
+
+

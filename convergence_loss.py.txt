@@ -1,0 +1,164 @@
+#python convergence_loss.py.txt 100 20 20 10 5# 100 times permutation, 20pair data, 20 polarization,10 lossing proportion, 5 mixing  proportion
+import sys
+import scipy.stats as st
+import numpy as np
+import random
+str1=int(sys.argv[1])
+str2=int(sys.argv[2])-1
+str3u=(100+int(sys.argv[3]))/100
+str3d=(100-int(sys.argv[3]))/100
+str4=int(sys.argv[4])
+str5=int(sys.argv[5])
+
+for iii in range (0,str1):
+ pall=[]
+ xbarall=[]
+ xmall=[]
+ palls=[]
+ xbaralls=[]
+ xmalls=[]
+ result=[]
+ four0=[]
+ five0=[]
+ six0=[]
+ p0=0
+ p04=p05=p06=1
+ for num0 in range(1,5):
+  f0=random.random()
+  p04=p04*f0
+  four0.append (f0)
+ for num0 in range(1,6):
+  f0=random.random()
+  p05=p05*f0
+  five0.append (f0)
+ for num0 in range(1,7):
+  f0=random.random()
+  p06=p06*f0
+  six0.append (f0)
+ p0=p04+p05+p06
+ pall.append(p0)
+ palls.append(str(p0))
+ combine0=[]
+ xbar0=xm0=0
+ for i in range(0,4):
+  for j in range(0,4):
+   for k in range(0,4):
+    if ((i!=j)and(i<j)and(j!=k)and(j<k)and(k!=i)):
+     fc=four0[i]*four0[j]*four0[k]
+     combine0.append (fc)
+ for i in range(0,5):
+  for j in range(0,5):
+   for k in range(0,5):
+    if ((i!=j)and(i<j)and(j!=k)and(j<k)and(k!=i)):
+     fc=five0[i]*five0[j]*five0[k]
+     combine0.append (fc)
+ for i in range(0,6):
+  for j in range(0,6):
+   for k in range(0,6):
+    if ((i!=j)and(i<j)and(j!=k)and(j<k)and(k!=i)):
+     fc=six0[i]*six0[j]*six0[k]
+     combine0.append (fc)
+ xbar0=np.mean(combine0)
+ xm0=np.median(combine0)
+ xbarall.append(xbar0)
+ xmall.append(xm0)
+ xbaralls.append(str(xbar0))
+ xmalls.append(str(xm0))
+
+ for ii in range (0,str2):
+  four=[]
+  five=[]
+  six=[]
+  combine=[]
+  p=0
+  p4=p5=p6=1
+  for num in range(0,4):
+   f=four0[num]*random.uniform(str3d,str3u)
+   p4=p4*f
+   four.append (f)
+  for num in range(0,5):
+   f=five0[num]*random.uniform(str3d,str3u)
+   p5=p5*f
+   five.append (f)
+  for num in range(0,6):
+   f=six0[num]*random.uniform(str3d,str3u)
+   p6=p6*f
+   six.append (f)
+  p=p4+p5+p6
+  pall.append(p)
+  palls.append(str(p))
+
+  xbar=xm=0
+  for i in range(0,4):
+   for j in range(0,4):
+    for k in range(0,4):
+     if ((i!=j)and(i<j)and(j!=k)and(j<k)and(k!=i)):
+      fcc=four[i]*four[j]*four[k]
+      combine.append (fcc)
+  for i in range(0,5):
+   for j in range(0,5):
+    for k in range(0,5):
+     if ((i!=j)and(i<j)and(j!=k)and(j<k)and(k!=i)):
+      fcc=five[i]*five[j]*five[k]
+      combine.append (fcc)
+  for i in range(0,6):
+   for j in range(0,6):
+    for k in range(0,6):
+     if ((i!=j)and(i<j)and(j!=k)and(j<k)and(k!=i)):
+      fcc=six[i]*six[j]*six[k]
+      combine.append (fcc)
+  left=int(len(combine)*(100-str4)/100)
+  mix=int(len(combine)*str5/100)
+  combine_sample=random.sample(combine,left)
+  pd=p0*0.01
+  mixlist=[]
+  for xx in range(0,mix):
+   mixlist.append(random.uniform(pd,p0))
+  combine_sample_mix=combine_sample + mixlist
+  xbar=np.mean(combine_sample_mix)
+  xm=np.median(combine_sample_mix)
+  xbarall.append(xbar)
+  xmall.append(xm)
+  xbaralls.append(str(xbar))
+  xmalls.append(str(xm))
+#  combinelen=combine_samplelen=combine_sample_mixlen=0
+#  combinelen=len(combine)
+#  combine_samplelen=len(combine_sample)
+#  combine_sample_mixlen=len(combine_sample_mix)
+#  print (combinelen,combine_samplelen,combine_sample_mixlen)
+
+ slope, intercept, r_value, p_value, slope_std_error = st.linregress(xbarall, pall)
+ result.append(str(slope))
+ result.append(str(intercept))
+ result.append(str(r_value**2))
+ result.append(str(slope_std_error))
+ result.append(str(p_value))
+
+ slope, intercept, r_value, p_value, slope_std_error = st.linregress(xmall, pall)
+ result.append(str(slope))
+ result.append(str(intercept))
+ result.append(str(r_value**2))
+ result.append(str(slope_std_error))
+ result.append(str(p_value))
+ a = ','
+ resultlist=a.join(result)
+ resultn=resultlist + "\n"
+ file = open("./convergence_loss/result.txt", "a")
+ file.write(resultn)
+ file.close()
+
+ if ((iii==0) or (iii==9) or (iii==99)):
+  f = open("./convergence_loss/{0}.txt".format(iii), "w") 
+  aa = ','
+  xbaralllist=aa.join(xbaralls)
+  xbaralln=xbaralllist + "\n"
+  xmalllist=aa.join(xmalls)
+  xmalln=xmalllist + "\n"
+  palllist=aa.join(palls)
+  palln=palllist + "\n"
+  f.write(str(xbaralln))
+  f.write(str(xmalln))
+  f.write(str(palln))
+  f.close()
+
+
