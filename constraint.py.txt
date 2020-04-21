@@ -1,4 +1,4 @@
-#python completely_random.py.txt 100 20 20# 100 times permutation, 20pair data, 20 polarization
+#python constraint.py.txt 100 20 20# 100 times permutation, 20pair data, 20 polarization
 import sys
 import scipy.stats as st
 import numpy as np
