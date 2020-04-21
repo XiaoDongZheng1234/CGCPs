@@ -1,4 +1,4 @@
-#python convergence_loss.py.txt 100 20 20 10 5# 100 times permutation, 20pair data, 20 polarization,10 lossing proportion, 5 mixing  proportion
+#python convergence_lost_mixed.py.txt 100 20 20 10 5# 100 times permutation, 20pair data, 20 polarization,10 lossing proportion, 5 mixing  proportion
 import sys
 import scipy.stats as st
 import numpy as np
