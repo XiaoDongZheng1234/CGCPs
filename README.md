@@ -9,7 +9,13 @@ Prepared genotype/sequencing data to plain text PLINK format(.ped/.map/.hwe). Te
 # Clone the repository
 git clone https://github.com/XiaoDongZheng1234/CGCPs.git
 
-# Install dependencies
+# Environment & Requirements
+Python Version Required: Python 3.8+
+Recommended: Python 3.11+ (provides significant performance speedup for matrix calculations)
+
+# Dependencies
+Install necessary libraries via pip:
+```bash
 pip install pandas numpy tqdm
 
 # Run the analysis with 36 cores
